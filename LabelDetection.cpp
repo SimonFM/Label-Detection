@@ -1,13 +1,13 @@
 /*
- * Simon Markham - 12307233
- * 
+ * Simon Markham 
+ *
  * Label Detection using OpenCV
  *
  * For my implementation I examined the images through the HLS channels
  * and saw that the "best" way to detect a label was through the Luminance
- * channel or the Saturation Channels and then caculated the Sd of those 
+ * channel or the Saturation Channels and then caculated the Sd of those
  * images in those channels. If they had a high SD, then they probably had
- * a label due to the various different colours in those spectrums. If they 
+ * a label due to the various different colours in those spectrums. If they
  * had a relatively low SD, then they shouldn't have a label.
  */
 #include "opencv2/imgproc/imgproc.hpp"
@@ -40,7 +40,7 @@ int i, j;
 int channelIndex = 1;
 double standard_dev = 0;
 
-// Testing 
+// Testing
 int FP = 0,FN = 0, TP = 0,TN = 0;
 double precision, accuracy, recall, f1, specificity;
 
@@ -58,7 +58,7 @@ void setSampleSD(int index){
 
 /**
  * This function calculates the True Positives, True Negatives,
- * False Positives and the False Negatives. I looked at how Ken did 
+ * False Positives and the False Negatives. I looked at how Ken did
  * it in his book and came up with my own method that does it.
  */
 void test(bool results){
@@ -73,12 +73,12 @@ void test(bool results){
 	else if(results == true && groundTruth[i][j] == false) FP++;
 	// False Negative
 	// There was a label, but it was not classified as a label
-	else if(results == false && groundTruth[i][j] == true) FN++;	
+	else if(results == false && groundTruth[i][j] == true) FN++;
 	else cout << "This shouldn't have happened"<<endl;
 }
 
 /**
- * A simple method to get the standard deviation and determine if there's 
+ * A simple method to get the standard deviation and determine if there's
  * a label or not. If the label has an SD of less than 19.0 then shouldn't
  * be a label otherwise, there should be.
  */
@@ -95,12 +95,12 @@ void detectLabel(Mat img){
 	else cout << "NO" <<endl;
 	test(result);
 
-	imshow("IMAGE",image[i]);	
+	imshow("IMAGE",image[i]);
 	imshow(str+" : result_"+i,img);
 }
 
 // Function to run program
-int main(int argc, const char** argv){	
+int main(int argc, const char** argv){
 	Mat display;
 	Mat * hls =	new Mat[5];
 	int number_of_images = sizeof(imageFiles)/sizeof(imageFiles[0]);
@@ -137,7 +137,7 @@ int main(int argc, const char** argv){
 		// set the sample Standard Deviation
 		setSampleSD(1);
 		for (i = 0; i < number_of_images; i++){
-			// This the area my solution crops for every image loaded in. 
+			// This the area my solution crops for every image loaded in.
 			// values for each image.
 			switch(i){
 				case 0:
@@ -183,8 +183,8 @@ int main(int argc, const char** argv){
 					cropped[4] = image[i](Rect (539,179,70,88));
 					break;
 			}
-		
-			str = imageFiles[i];		
+
+			str = imageFiles[i];
 			// Iterate through every cropped image to determine if there's a label.
 			// By first convert to the HLS spectrum, then getting those separate hlsChannels
 			// and passing the luminence channel in to the detectLabel function
